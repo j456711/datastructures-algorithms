@@ -48,8 +48,48 @@ func printLinkedList(_ head: Node?) {
     print(result)
 }
 
+// 暴力解 O(n^2)
+//func findMerge(headA: Node?, headB: Node?) -> Int? {
+//    let lengthA = length(headA) // O(n)
+//    let lengthB = length(headB) // O(n)
+//    print(lengthA)
+//    print(lengthB)
+//
+//    var currentA = headA
+//    for _ in 0 ..< lengthA { // O(n)
+//        var currentB = headB
+//        for _ in 0 ..< lengthB { // O(n)
+//            let dataA = currentA?.data
+//            let dataB = currentB?.data
+//            print("A: \(dataA ?? 0), B: \(dataB ?? 0)")
+//            currentB = currentB?.next
+//
+//            if dataA == dataB { return dataA }
+//        }
+//        currentA = currentA?.next
+//    }
+//    return nil
+//}
+
 func findMerge(headA: Node?, headB: Node?) -> Int? {
-    // Here...
+    let lengthA = length(headA) // O(n)
+    let lengthB = length(headB) // O(n)
+    print(lengthA)
+    print(lengthB)
+    
+    var currentA = headA
+    for _ in 0 ..< lengthA { // O(n)
+        var currentB = headB
+        for _ in 0 ..< lengthB { // O(n)
+            let dataA = currentA?.data
+            let dataB = currentB?.data
+            print("A: \(dataA ?? 0), B: \(dataB ?? 0)")
+            currentB = currentB?.next
+            
+            if dataA == dataB { return dataA }
+        }
+        currentA = currentA?.next
+    }
     return nil
 }
 
