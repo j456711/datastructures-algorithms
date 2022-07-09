@@ -17,11 +17,16 @@ import UIKit
  */
 
 func solution(A: [Int], K: Int) -> [Int] {
-    // do your work here...
-    return [Int]()
+    guard A.count > 1 else { return A }
+    var a = A
+    for _ in 0 ..< K {
+        let last = a.removeLast()
+        a.insert(last, at: 0)
+    }
+    return a
 }
 
-solution(A: [1, 2, 3, 4, 5], K: 1) // 5 1 2 3 4
+solution(A: [1, 2, 3, 4, 5], K: 6) // 5 1 2 3 4
 solution(A: [1, 2, 3, 4, 5], K: 2) // 4 5 1 2 3
 solution(A: [1, 2, 3, 4, 5], K: 3) // 3 4 5 1 2
 

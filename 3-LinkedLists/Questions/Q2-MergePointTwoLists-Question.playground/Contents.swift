@@ -48,35 +48,14 @@ func printLinkedList(_ head: Node?) {
     print(result)
 }
 
-// 暴力解 O(n^2)
-//func findMerge(headA: Node?, headB: Node?) -> Int? {
-//    let lengthA = length(headA) // O(n)
-//    let lengthB = length(headB) // O(n)
-//    print(lengthA)
-//    print(lengthB)
-//
-//    var currentA = headA
-//    for _ in 0 ..< lengthA { // O(n)
-//        var currentB = headB
-//        for _ in 0 ..< lengthB { // O(n)
-//            let dataA = currentA?.data
-//            let dataB = currentB?.data
-//            print("A: \(dataA ?? 0), B: \(dataB ?? 0)")
-//            currentB = currentB?.next
-//
-//            if dataA == dataB { return dataA }
-//        }
-//        currentA = currentA?.next
-//    }
-//    return nil
-//}
-
+// 暴力解
+// O(n^2)
 func findMerge(headA: Node?, headB: Node?) -> Int? {
     let lengthA = length(headA) // O(n)
     let lengthB = length(headB) // O(n)
     print(lengthA)
     print(lengthB)
-    
+
     var currentA = headA
     for _ in 0 ..< lengthA { // O(n)
         var currentB = headB
@@ -85,11 +64,77 @@ func findMerge(headA: Node?, headB: Node?) -> Int? {
             let dataB = currentB?.data
             print("A: \(dataA ?? 0), B: \(dataB ?? 0)")
             currentB = currentB?.next
-            
+
             if dataA == dataB { return dataA }
         }
         currentA = currentA?.next
     }
+    return nil
+}
+
+// 用空間（dictionary）換取時間
+// O(n)
+func findMergeSpaceTime(headA: Node?, headB: Node?) -> Int? {
+    let lengthA = length(headA) // O(n)
+    let lengthB = length(headB) // O(n)
+    print(lengthA)
+    print(lengthB)
+    
+    var dict = [Int?: Bool]()
+
+    var currentA = headA
+    for _ in 0 ..< lengthA { // O(n)
+        dict[currentA?.data] = true
+        currentA = currentA?.next
+    }
+    
+    var currentB = headB
+    for _ in 0 ..< lengthB { // O(n)
+        if dict[currentB?.data] != nil { return currentB?.data }
+        currentB = currentB?.next
+    }
+    
+    return nil
+}
+
+
+// 口 -> 口 ->| 口 -> 口 ->
+//           |            \
+//           |             口 -> 口 -> 口
+//           |            /
+//           | 口 -> 口 ->
+//
+// 算其中一條 link list 多出來的 node 有幾個，剩下的再一起比對
+// O(n)
+func findMergeInsight(headA: Node?, headB: Node?) -> Int? {
+    let lengthA = length(headA) // O(n)
+    let lengthB = length(headB) // O(n)
+    print(lengthA)
+    print(lengthB)
+
+    let extraNodeCount: Int
+    var longerNode: Node?
+    var shorterNode: Node?
+    if lengthA >= lengthB {
+        longerNode = headA
+        shorterNode = headB
+        extraNodeCount = lengthA - lengthB
+    } else {
+        longerNode = headB
+        shorterNode = headA
+        extraNodeCount = lengthB - lengthA
+    }
+    
+    for _ in 0 ..< extraNodeCount {
+        longerNode = longerNode?.next
+    }
+    
+    for _ in 0 ..< lengthB {
+        if longerNode?.data == shorterNode?.data { return longerNode?.data }
+        longerNode = longerNode?.next
+        shorterNode = shorterNode?.next
+    }
+    
     return nil
 }
 
@@ -109,3 +154,5 @@ printLinkedList(node1)
 printLinkedList(node10)
 
 findMerge(headA: node1, headB: node10)
+findMergeSpaceTime(headA: node1, headB: node10)
+findMergeInsight(headA: node10, headB: node1)
